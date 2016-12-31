@@ -110,18 +110,29 @@ var ecSubtitles = function(element){
   s._subCache = null;
   s._ele = element;
 
-  s.set = function(srtPath,styles){
-    if(['string','object'].indexOf(typeof styles) > -1){ s.style(styles); }
-    
+  s.load = function(srtPath,styles,callback){
+    if(['string','object'].indexOf(typeof styles) > -1){
+      s.style(styles);
+    }
+    var _cb = (typeof styles=='function' ? styles : (typeof callback=='function' ? callback : false) );
+
     var xhr = new XMLHttpRequest();
     xhr.open("GET", srtPath, true);
     xhr.addEventListener('readystatechange', function(){
       if(xhr.readyState === 4){
         var raw = xhr.responseText;
         s._subCache = subtitles_parser.fromSrt(raw,true);
+        s.enabled = true;
+        if(_cb){
+          _cb(null);
+        }
       }
     });
     xhr.send();
+  }
+  s.unload = function(){
+    s._subCache = null;
+    s.enabled = false;
   }
 
   s.style = function(styles){
@@ -138,9 +149,6 @@ var ecSubtitles = function(element){
   }
   s.disable = function(){
     s.enabled=false;
-  }
-  s.unset = function(){
-    s._subCache = null;
   }
   s.timeupdate = function(time){
     if(s._subCache && s.enabled){

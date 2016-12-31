@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="../src/subtitles.js"></script>
+  <style>
+  #player {
+    position: relative;
+    width: 854px;
+    height: 480px;
+  }
+  #subtitles {
+    color: #fff;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: 1px 1px #000;
+    position: absolute;
+    bottom: 5%;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  </style>
+</head>
+<body>
+  <div id="player">
+    <video id="media" src="https://d1nanp5sznh0yj.cloudfront.net/resources/720x480_5mb.mp4" autoplay controls width="854" height="480"></video>
+    <div id="subtitles">Subtitles will appear here</div>
+  </div>
+  <script>
+    var videoElement = document.getElementById("media");
+    var subElement = document.getElementById("subtitles");
+
+    //create it, passing the elment
+    var mySubtitles = new ecSubtitles(subElement);
+
+    //load the subtitles file
+    mySubtitles.load("./subtitles.srt", function(err){
+      console.log("Subtitles loaded!")
+    });
+
+    //update the playtime when video changes
+    videoElement.ontimeupdate = function(){
+      mySubtitles.timeupdate(videoElement.currentTime);
+    }
+  </script>
+</body>
+</html>
