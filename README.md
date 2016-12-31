@@ -1,2 +1,2 @@
 # extracast-subtitles
-Subtitle module used by the Extracast media player.
+Subtitle module used by the [Extracast](https://github.com/dudewheresmycode/Extracast) media player.
