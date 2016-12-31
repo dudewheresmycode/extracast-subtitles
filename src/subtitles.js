@@ -106,35 +106,47 @@ var subtitles_parser = (function() {
 var ecSubtitles = function(element){
 
   var s = this;
+  s.enabled = false;
   s._subCache = null;
   s._ele = element;
-  var lastId = 0;
 
-  s.set = function(srtPath){
+  s.set = function(srtPath,styles){
+    if(['string','object'].indexOf(typeof styles) > -1){ s.style(styles); }
+    
     var xhr = new XMLHttpRequest();
-    console.log("GET SRT:", srtPath);
     xhr.open("GET", srtPath, true);
     xhr.addEventListener('readystatechange', function(){
-      console.log(xhr.readyState);
       if(xhr.readyState === 4){
         var raw = xhr.responseText;
-        console.log("SRT", raw);
         s._subCache = subtitles_parser.fromSrt(raw,true);
-        console.log("SRT-PARSED", s._subCache);
       }
     });
     xhr.send();
+  }
+
+  s.style = function(styles){
+    if(typeof css=='string'){
+      s._ele.style = styles;
+    }else if(typeof css=='object'){
+      var css = [];
+      Object.keys(styles).forEach(function(k){ css += [k,styles[k]].join(':'); });
+      s._ele.style = css.join(';');
+    }
+  }
+  s.enable = function(){
+    s.enabled=true;
+  }
+  s.disable = function(){
+    s.enabled=false;
   }
   s.unset = function(){
     s._subCache = null;
   }
   s.timeupdate = function(time){
-
-    if(s._subCache){
+    if(s._subCache && s.enabled){
       var ms = time*1000;
       var sub = s._subCache.find(function(it){ return ms >= it.startTime  && ms <= it.endTime; });
       s._ele.innerHTML = sub ? sub.text : "";
-      console.log("subtime", ms, sub);
     }
   }
 

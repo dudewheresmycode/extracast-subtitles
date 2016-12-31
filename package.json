@@ -1,0 +1,8 @@
+{
+  "name":"extracast-subtitles",
+  "version":"1.0.0",
+  "repository":"https://github.com/dudewheresmycode/extracast-subtitles",
+  "author":"dudewheresmycode",
+  "main":"index.js",
+  "license":"GPL-3.0"
+}
