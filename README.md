@@ -2,7 +2,6 @@
 Subtitle module used by the [Extracast](https://github.com/dudewheresmycode/Extracast) media player.
 
 **Basic Example**
-
 ```javascript
   //pass the element you want the subtitles to be rendered in
   var videoSubtitles = new ecSubtitles(document.getElementById("video-subtitles"));
